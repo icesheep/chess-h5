@@ -1,0 +1,105 @@
+{
+	"groups": [
+		{
+			"keys": "bg_jpg,description_json,pieces_png,red-chief_png,red-car_png,red-horse_png,red-cannon_png,red-elephant_png,red-scholar_png,black-chief_png,black-car_png,black-horse_png,black-cannon_png,black-elephant_png,black-scholar_png,black-soldier_png,red-soldier_png,board_json,piece_json",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"name": "bg_jpg",
+			"type": "image",
+			"url": "assets/bg.jpg"
+		},
+		{
+			"name": "description_json",
+			"type": "json",
+			"url": "config/description.json"
+		},
+		{
+			"name": "pieces_png",
+			"type": "image",
+			"url": "assets/pieces.png"
+		},
+		{
+			"name": "red-chief_png",
+			"type": "image",
+			"url": "assets/red-chief.png"
+		},
+		{
+			"name": "red-car_png",
+			"type": "image",
+			"url": "assets/red-car.png"
+		},
+		{
+			"name": "red-horse_png",
+			"type": "image",
+			"url": "assets/red-horse.png"
+		},
+		{
+			"name": "red-cannon_png",
+			"type": "image",
+			"url": "assets/red-cannon.png"
+		},
+		{
+			"name": "red-elephant_png",
+			"type": "image",
+			"url": "assets/red-elephant.png"
+		},
+		{
+			"name": "red-scholar_png",
+			"type": "image",
+			"url": "assets/red-scholar.png"
+		},
+		{
+			"name": "black-chief_png",
+			"type": "image",
+			"url": "assets/black-chief.png"
+		},
+		{
+			"name": "black-car_png",
+			"type": "image",
+			"url": "assets/black-car.png"
+		},
+		{
+			"name": "black-horse_png",
+			"type": "image",
+			"url": "assets/black-horse.png"
+		},
+		{
+			"name": "black-cannon_png",
+			"type": "image",
+			"url": "assets/black-cannon.png"
+		},
+		{
+			"name": "black-elephant_png",
+			"type": "image",
+			"url": "assets/black-elephant.png"
+		},
+		{
+			"name": "black-scholar_png",
+			"type": "image",
+			"url": "assets/black-scholar.png"
+		},
+		{
+			"name": "black-soldier_png",
+			"type": "image",
+			"url": "assets/black-soldier.png"
+		},
+		{
+			"name": "red-soldier_png",
+			"type": "image",
+			"url": "assets/red-soldier.png"
+		},
+		{
+			"name": "board_json",
+			"type": "json",
+			"url": "assets/board.json"
+		},
+		{
+			"name": "piece_json",
+			"type": "json",
+			"url": "assets/piece.json"
+		}
+	]
+}
