@@ -1,10 +1,10 @@
 [
-    {"name":"red-car","x":0,"y":0},{"name":"red-horse","x":0,"y":1},{"name":"red-elephant","x":0,"y":2},{"name":"red-scholar","x":0,"y":3},
-    {"name":"red-chief","x":0,"y":4},{"name":"red-scholar","x":0,"y":5},{"name":"red-elephant","x":0,"y":6},{"name":"red-horse","x":0,"y":7},{"name":"red-car","x":0,"y":8},
-    {"name":"red-cannon","x":2,"y":1},{"name":"red-cannon","x":2,"y":7},
-    {"name":"red-soldier","x":3,"y":0},{"name":"red-soldier","x":3,"y":2},{"name":"red-soldier","x":3,"y":4},{"name":"red-soldier","x":3,"y":6},{"name":"red-soldier","x":3,"y":8},
-    {"name":"black-car","x":9,"y":0},{"name":"black-horse","x":9,"y":1},{"name":"black-elephant","x":9,"y":2},{"name":"black-scholar","x":9,"y":3},
-    {"name":"black-chief","x":9,"y":4},{"name":"black-scholar","x":9,"y":5},{"name":"black-elephant","x":9,"y":6},{"name":"black-horse","x":9,"y":7},{"name":"black-car","x":9,"y":8},
-    {"name":"black-cannon","x":7,"y":1},{"name":"black-cannon","x":7,"y":7},
-    {"name":"black-soldier","x":6,"y":0},{"name":"black-soldier","x":6,"y":2},{"name":"black-soldier","x":6,"y":4},{"name":"black-soldier","x":6,"y":6},{"name":"black-soldier","x":6,"y":8}
+    {"name":"red-car","x":1,"y":1},{"name":"red-horse","x":1,"y":2},{"name":"red-elephant","x":1,"y":3},{"name":"red-scholar","x":1,"y":4},
+    {"name":"red-chief","x":1,"y":5},{"name":"red-scholar","x":1,"y":6},{"name":"red-elephant","x":1,"y":7},{"name":"red-horse","x":1,"y":8},{"name":"red-car","x":1,"y":9},
+    {"name":"red-cannon","x":3,"y":2},{"name":"red-cannon","x":3,"y":8},
+    {"name":"red-soldier","x":4,"y":1},{"name":"red-soldier","x":4,"y":3},{"name":"red-soldier","x":4,"y":5},{"name":"red-soldier","x":4,"y":7},{"name":"red-soldier","x":4,"y":9},
+    {"name":"black-car","x":10,"y":1},{"name":"black-horse","x":10,"y":2},{"name":"black-elephant","x":10,"y":3},{"name":"black-scholar","x":10,"y":4},
+    {"name":"black-chief","x":10,"y":5},{"name":"black-scholar","x":10,"y":6},{"name":"black-elephant","x":10,"y":7},{"name":"black-horse","x":10,"y":8},{"name":"black-car","x":10,"y":9},
+    {"name":"black-cannon","x":8,"y":2},{"name":"black-cannon","x":8,"y":8},
+    {"name":"black-soldier","x":7,"y":1},{"name":"black-soldier","x":7,"y":3},{"name":"black-soldier","x":7,"y":5},{"name":"black-soldier","x":7,"y":7},{"name":"black-soldier","x":7,"y":9}
 ]
