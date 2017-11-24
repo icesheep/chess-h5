@@ -26,10 +26,10 @@ class Board extends egret.DisplayObjectContainer {
             // b.y = board[piece[i].x][piece[i].y].y;
             b.x = p.x;
             b.y = p.y;
-            b.width = 70;
-            b.height = 70;
-            b.anchorOffsetX = 35;
-            b.anchorOffsetY = 35;
+            b.width = 60;
+            b.height = 60;
+            b.anchorOffsetX = 30;
+            b.anchorOffsetY = 30;
             b.touchEnabled = true;
             b.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click,this);
         }
