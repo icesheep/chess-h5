@@ -122,7 +122,8 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     private b:Board = new Board();
-    private grid:number;
+    private gridX:number;
+    private gridY:number;
     /**
      * 创建游戏场景
      * Create a game scene
@@ -131,9 +132,10 @@ class Main extends egret.DisplayObjectContainer {
         let sky = this.createBitmapByName("bg_jpg");
         sky.anchorOffsetY = -(this.stage.stageHeight - sky.height) /2;
         this.addChild(sky);
-        this.grid = sky.height/10;
+        this.gridY = sky.height/10;
+        this.gridX = sky.width/9;
         this.addChild( this.b );
-        this.b.init(Color.Red,sky.x,sky.y+(this.stage.stageHeight - sky.height) /2,this.grid);
+        this.b.init(Color.Red,sky.x,sky.y+(this.stage.stageHeight - sky.height) /2,this.gridX,this.gridY);
         // let imgLoader:egret.ImageLoader = new egret.ImageLoader;
         // imgLoader.once( egret.Event.COMPLETE, this.imgLoadHandler, this );
         // imgLoader.load( "resource/assets/black-car.png" );

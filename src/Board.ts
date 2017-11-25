@@ -6,11 +6,20 @@ class Board extends egret.DisplayObjectContainer {
     }
     private startX:number;
     private startY:number;
-    private grid:number;
-    public init(color:number,x:number,y:number,grid:number)
+    private gridX:number;
+    private gridY:number;
+    private cage:egret.Shape = new egret.Shape(); //选中的方框
+    private con:egret.DisplayObjectContainer = new egret.DisplayObjectContainer(); //选中框的容器
+    private chooseFlag:boolean = false;
+    private eat:boolean = false;
+    private choose:egret.Bitmap;
+    public init(color:number,x:number,y:number,gridX:number,gridY:number)
     {
-        console.log(x,y,grid);
-        this.startX = x;this.startY=y;this.grid = grid;
+        console.log(x,y,gridX,gridY);
+        this.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,this.judge,this,true,1);
+        this.addChild(this.con);
+        // this.startX = x;this.startY=y;this.gridX = gridX;this.gridY = gridY;
+        this.startX = 25;this.startY=222;this.gridX = 75;this.gridY = 78;
         let len:number = RES.getRes("piece_json").length;
         let piece = RES.getRes("piece_json");
         let board = RES.getRes("board_json");
@@ -31,47 +40,63 @@ class Board extends egret.DisplayObjectContainer {
             b.anchorOffsetX = 30;
             b.anchorOffsetY = 30;
             b.touchEnabled = true;
-            b.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click,this);
+            b.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click,this,true,0);
         }
     }
     private click(evt:egret.TouchEvent)
     {
-        // var rel:boolean = this.check( evt.target.name );
-        // if( rel )
-        // {
-console.log(evt.target.x,evt.target.y,evt.target.name);
-            // evt.target.parent.removeChild(evt.target);
-        //     this._reqs[this._curReq].ns--;
-        //     this.update();
-
-        //     if( this._reqs[this._curReq].ns==0 )
-        //     {
-        //         this._curReq ++;
-        //         this.playNew();
-        //     }
-        // }
-
+        console.log(evt,"c");
+        if(this.eat) {
+            this.removeChild(evt.target);
+            this.eat = false;
+        }
+        if(this.con.x == evt.target.x-37.5 && this.con.y == evt.target.y-39 && this.chooseFlag) { //选中状态且目标点坐标与选中坐标相同，取消选择状态
+            this.con.removeChildren();
+            this.chooseFlag = false;
+        }else {
+            this.cage.graphics.lineStyle(2, 0x00CD00, 1, true)
+            this.cage.graphics.drawRect(0,0,75,78);
+            this.cage.graphics.endFill();
+            this.con.addChild(this.cage);
+            this.con.x = evt.target.x-37.5;
+            this.con.y = evt.target.y-39;
+            this.chooseFlag = true;
+            this.choose = evt.target;
+        }
     }
-
+    private judge(evt:egret.TouchEvent)
+    {
+        if(this.chooseFlag) {
+            console.log(evt,"judge");
+            if(true) { //能够移动
+                let p:Piece;
+                p = this.transformToPoint(evt.stageX,evt.stageY);
+                p = this.transformToPosition(p.pointX,p.pointY);
+                this.choose.x = p.x;
+                this.choose.y = p.y;
+                this.chooseFlag = false;
+                this.choose = null;
+                this.con.removeChildren();
+            }
+        }
+    }
+    
     private transformToPoint(x:number,y:number):Piece
     {
         let p = new Piece();
-        console.log(x,y);
         p.x = x;
         p.y = y;
-        p.pointX = Math.round((y - this.startX)/this.grid);
-        p.pointY = Math.round((x - this.startY)/this.grid);
+        p.pointY = Math.round((x - this.startX)/this.gridX)+1;
+        p.pointX = Math.round((y - this.startY)/this.gridY)+1;
         return p;
-
     }
     private transformToPosition(x:number,y:number):Piece
     {
         let p = new Piece();
         p.pointX = x;
         p.pointY = y;
-        p.x = this.startX + y*this.grid - this.grid/2;
-        p.y = this.startY + x*this.grid - this.grid/2;
+        p.x = this.startX + (y-1)*this.gridX ;
+        p.y = this.startY + (x-1)*this.gridY ;
         return p;
-
     }
 }
