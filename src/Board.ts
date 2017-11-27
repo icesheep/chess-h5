@@ -14,9 +14,11 @@ class Board extends egret.DisplayObjectContainer {
     private eat:boolean = false;
     private choose:Piece;
     public pieceMap:{[key:string]:Piece} = {};
+    public static playerColor:number;
     public init(color:number,x:number,y:number,gridX:number,gridY:number)
     {
         console.log(x,y,gridX,gridY);
+        Board.playerColor = color;
         this.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,this.judge,this,true,1);
         this.addChild(this.con);
         // this.startX = x;this.startY=y;this.gridX = gridX;this.gridY = gridY;
@@ -26,11 +28,12 @@ class Board extends egret.DisplayObjectContainer {
         for(let i:number = 0; i<len; i++)
         {
             let b:egret.Bitmap = new egret.Bitmap();
-            b.texture = RES.getRes(piece[i].name+(Color.Red+Math.floor(i/16))+"_png");
+            b.texture = RES.getRes(piece[i].name + (Color.Red + Math.floor(i/16)) +"_png");
             this.addChild(b);
             let p:Piece = new Piece();
-            p.transformToPosition(piece[i].x,piece[i].y,piece[i].name,Color.Red+Math.floor(i/16));
+            p.transformToPosition(piece[i].x,piece[i].y,piece[i].name,Color.Red + Math.floor(i/16));
             p.bitMap = b;
+            p.key = i;
             this.pieceMap[i] = p;
             b.name = piece[i].name;
             b.x = p.x;
@@ -44,43 +47,52 @@ class Board extends egret.DisplayObjectContainer {
             // b.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click,this,true,0);
         }
     }
-    private click(evt:egret.TouchEvent)
-    {
-        console.log(evt,"c");
-        if(this.eat) {
-            this.removeChild(evt.target);
-            this.eat = false;
-        }
-        if(this.con.x == evt.target.x-37.5 && this.con.y == evt.target.y-39 && this.chooseFlag) { //选中状态且目标点坐标与选中坐标相同，取消选择状态
-            this.con.removeChildren();
-            this.chooseFlag = false;
-        }else {
-            this.cage.graphics.lineStyle(2, 0x00CD00, 1, true)
-            this.cage.graphics.drawRect(0,0,75,78);
-            this.cage.graphics.endFill();
-            this.con.addChild(this.cage);
-            this.con.x = evt.target.x-37.5;
-            this.con.y = evt.target.y-39;
-            this.chooseFlag = true;
-            this.choose = evt.target;
-        }
-    }
+
+    //棋盘点击事件
     private judge(evt:egret.TouchEvent)
     {
-        if(this.chooseFlag) {
+        if(this.chooseFlag) {  //已经选中棋子
             console.log(evt,"judge");
             if(true) { //能够移动
-                let p:Piece = this.findPiece(evt.stageX,evt.$stageY);
-                this.choose.x = p.x;
-                this.choose.y = p.y;
-                this.chooseFlag = false;
-                this.choose = null;
-                this.con.removeChildren();
+                let temp:{pointX:number,pointY:number} = this.findPoint(evt.stageX,evt.$stageY);
+                let p:Piece = this.findPiece(temp.pointX,temp.pointY);
+                this.con.removeChildren(); //去掉选择框
+                if(p && p != this.choose) { //吃子
+                    this.choose.x = p.x;
+                    this.choose.y = p.y;
+                    this.choose.pointX = p.pointX;
+                    this.choose.pointY = p.pointY;
+                    this.choose.bitMap.x = p.x;
+                    this.choose.bitMap.y = p.y;
+                    delete this.pieceMap[p.key];
+                    this.chooseFlag = false;
+                    this.choose = null;
+                    this.removeChild(p.bitMap);
+                } else { //移动
+                    let tempx:number;
+                    let tempy:number;
+                    if(Board.playerColor === Color.Red) {
+                        tempx = Board.startX + (9-temp.pointX)*Board.gridX ;
+                        tempy = Board.startY + (10-temp.pointY)*Board.gridY ;
+                    } else {
+                        tempx = Board.startX + (temp.pointX-1)*Board.gridX ;
+                        tempy = Board.startY + (temp.pointY-1)*Board.gridY ;
+                    }
+                    this.choose.x = tempx;
+                    this.choose.y = tempy;
+                    this.choose.pointX = temp.pointX;
+                    this.choose.pointY = temp.pointY;
+                    this.choose.bitMap.x = tempx;
+                    this.choose.bitMap.y = tempy;
+                    this.chooseFlag = false;
+                    this.choose = null;
+                }
             }
-        }else {
-            let p:Piece = this.findPiece(evt.stageX,evt.$stageY);
-            console.log(p,"judge");
-            if(p) {
+        }else { //未选择棋子，进行选择
+            let temp:{pointX:number,pointY:number} = this.findPoint(evt.stageX,evt.$stageY);
+            let p:Piece = this.findPiece(temp.pointX,temp.pointY);
+            // console.log(p,"judge");
+            if(p && p.color === Board.playerColor) {
                 this.cage.graphics.lineStyle(2, 0x00CD00, 1, true)
                 this.cage.graphics.drawRect(0,0,75,78);
                 this.cage.graphics.endFill();
@@ -93,9 +105,8 @@ class Board extends egret.DisplayObjectContainer {
         }
     }
     
-    private findPiece(x,y):Piece {
-        let pointX = 9 - Math.round((x - Board.startX)/Board.gridX)+1;
-        let pointY = 10 - Math.round((y - Board.startY)/Board.gridY)+1;
+    //根据棋盘坐标获取棋子
+    private findPiece(pointX:number,pointY:number):Piece {
         console.log(this.pieceMap,pointX,pointY);
         for(let v in this.pieceMap){
             console.log(this.pieceMap[v]);
@@ -104,6 +115,20 @@ class Board extends egret.DisplayObjectContainer {
             }
         }
         return null;
+    }
+
+    //根据点击坐标获取棋盘坐标
+    private findPoint(x:number,y:number):{pointX:number,pointY:number} {
+        let pointX:number;
+        let pointY:number;
+        if(Board.playerColor === Color.Red) {
+            pointX = 9 - Math.round((x - Board.startX)/Board.gridX);
+            pointY = 10 - Math.round((y - Board.startY)/Board.gridY);
+        } else {
+            pointX = Math.round((x - Board.startX)/Board.gridX) + 1;
+            pointY = Math.round((y - Board.startY)/Board.gridY) + 1;
+        }
+        return {pointX:pointX, pointY:pointY};
     }
     
 }

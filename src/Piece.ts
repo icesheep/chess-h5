@@ -1,5 +1,6 @@
 class Piece
 {
+    public key:number;
     public name:string = "";
     public x:number = 0;
     public y:number = 0;
@@ -14,8 +15,8 @@ class Piece
         this.y = y;
         this.name = name;
         this.color = color;
-        this.pointX = 9 - Math.round((x - Board.startX)/Board.gridX)+1;
-        this.pointY = 10 - Math.round((y - Board.startY)/Board.gridY)+1;
+        this.pointX = Math.round((x - Board.startX)/Board.gridX)+1;
+        this.pointY = Math.round((y - Board.startY)/Board.gridY)+1;
     }
     public transformToPosition(pointX:number,pointY:number,name:string,color:number):void
     {
@@ -23,7 +24,12 @@ class Piece
         this.pointY = pointY;
         this.name = name;
         this.color = color;
-        this.x = Board.startX + (9-pointX)*Board.gridX ;
-        this.y = Board.startY + (10-pointY)*Board.gridY ;
+        if(Board.playerColor === Color.Red) {
+            this.x = Board.startX + (9-pointX)*Board.gridX ;
+            this.y = Board.startY + (10-pointY)*Board.gridY ;
+        } else {
+            this.x = Board.startX + (pointX-1)*Board.gridX ;
+            this.y = Board.startY + (pointY-1)*Board.gridY ;
+        }
     }
 }

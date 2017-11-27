@@ -135,7 +135,7 @@ class Main extends egret.DisplayObjectContainer {
         this.gridY = sky.height/10;
         this.gridX = sky.width/9;
         this.addChild( this.b );
-        this.b.init(Color.Red,sky.x,sky.y+(this.stage.stageHeight - sky.height) /2,this.gridX,this.gridY);
+        this.b.init(Color.Black,sky.x,sky.y+(this.stage.stageHeight - sky.height) /2,this.gridX,this.gridY);
         // let imgLoader:egret.ImageLoader = new egret.ImageLoader;
         // imgLoader.once( egret.Event.COMPLETE, this.imgLoadHandler, this );
         // imgLoader.load( "resource/assets/black-car.png" );

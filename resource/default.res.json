@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "description_json,bg_jpg,pieces_png,board_json,piece_json,Gun2_png,Rook2_png,King2_png,Bishop2_png,Knight2_png,Guard2_png,Pawn2_png,Gun1_png,Rook1_png,King1_png,Bishop1_png,Knight1_png,Guard1_png,Pawn1_png",
+			"keys": "description_json,bg_jpg,pieces_png,board_json,piece_json,Gun2_png,Rook2_png,King2_png,Bishop2_png,Knight2_png,Guard2_png,Pawn2_png,Gun1_png,Rook1_png,King1_png,Bishop1_png,Knight1_png,Guard1_png,Pawn1_png,Bishop12_png,Bishop22_png,Guard12_png,Guard22_png,Gun12_png,Gun22_png,King12_png,King22_png,Knight12_png,Knight22_png,Pawn12_png,Pawn22_png,Rook12_png,Rook22_png",
 			"name": "preload"
 		}
 	],
@@ -100,6 +100,76 @@
 			"name": "Pawn1_png",
 			"type": "image",
 			"url": "assets/Pawn1.png"
+		},
+		{
+			"name": "Bishop12_png",
+			"type": "image",
+			"url": "assets/Bishop1.png"
+		},
+		{
+			"name": "Bishop22_png",
+			"type": "image",
+			"url": "assets/Bishop2.png"
+		},
+		{
+			"name": "Guard12_png",
+			"type": "image",
+			"url": "assets/Guard1.png"
+		},
+		{
+			"name": "Guard22_png",
+			"type": "image",
+			"url": "assets/Guard2.png"
+		},
+		{
+			"name": "Gun12_png",
+			"type": "image",
+			"url": "assets/Gun1.png"
+		},
+		{
+			"name": "Gun22_png",
+			"type": "image",
+			"url": "assets/Gun2.png"
+		},
+		{
+			"name": "King12_png",
+			"type": "image",
+			"url": "assets/King1.png"
+		},
+		{
+			"name": "King22_png",
+			"type": "image",
+			"url": "assets/King2.png"
+		},
+		{
+			"name": "Knight12_png",
+			"type": "image",
+			"url": "assets/Knight1.png"
+		},
+		{
+			"name": "Knight22_png",
+			"type": "image",
+			"url": "assets/Knight2.png"
+		},
+		{
+			"name": "Pawn12_png",
+			"type": "image",
+			"url": "assets/Pawn1.png"
+		},
+		{
+			"name": "Pawn22_png",
+			"type": "image",
+			"url": "assets/Pawn2.png"
+		},
+		{
+			"name": "Rook12_png",
+			"type": "image",
+			"url": "assets/Rook1.png"
+		},
+		{
+			"name": "Rook22_png",
+			"type": "image",
+			"url": "assets/Rook2.png"
 		}
 	]
 }
