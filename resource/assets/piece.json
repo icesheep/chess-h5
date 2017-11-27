@@ -1,10 +1,10 @@
 [
-    {"name":"red-car","x":1,"y":1},{"name":"red-horse","x":1,"y":2},{"name":"red-elephant","x":1,"y":3},{"name":"red-scholar","x":1,"y":4},
-    {"name":"red-chief","x":1,"y":5},{"name":"red-scholar","x":1,"y":6},{"name":"red-elephant","x":1,"y":7},{"name":"red-horse","x":1,"y":8},{"name":"red-car","x":1,"y":9},
-    {"name":"red-cannon","x":3,"y":2},{"name":"red-cannon","x":3,"y":8},
-    {"name":"red-soldier","x":4,"y":1},{"name":"red-soldier","x":4,"y":3},{"name":"red-soldier","x":4,"y":5},{"name":"red-soldier","x":4,"y":7},{"name":"red-soldier","x":4,"y":9},
-    {"name":"black-car","x":10,"y":1},{"name":"black-horse","x":10,"y":2},{"name":"black-elephant","x":10,"y":3},{"name":"black-scholar","x":10,"y":4},
-    {"name":"black-chief","x":10,"y":5},{"name":"black-scholar","x":10,"y":6},{"name":"black-elephant","x":10,"y":7},{"name":"black-horse","x":10,"y":8},{"name":"black-car","x":10,"y":9},
-    {"name":"black-cannon","x":8,"y":2},{"name":"black-cannon","x":8,"y":8},
-    {"name":"black-soldier","x":7,"y":1},{"name":"black-soldier","x":7,"y":3},{"name":"black-soldier","x":7,"y":5},{"name":"black-soldier","x":7,"y":7},{"name":"black-soldier","x":7,"y":9}
+    {"name":"Rook","x":1,"y":1},{"name":"Knight","x":2,"y":1},{"name":"Bishop","x":3,"y":1},{"name":"Guard","x":4,"y":1},
+    {"name":"King","x":5,"y":1},{"name":"Guard","x":6,"y":1},{"name":"Bishop","x":7,"y":1},{"name":"Knight","x":8,"y":1},{"name":"Rook","x":9,"y":1},
+    {"name":"Gun","x":2,"y":3},{"name":"Gun","x":8,"y":3},
+    {"name":"Pawn","x":1,"y":4},{"name":"Pawn","x":3,"y":4},{"name":"Pawn","x":5,"y":4},{"name":"Pawn","x":7,"y":4},{"name":"Pawn","x":9,"y":4},
+    {"name":"Rook","x":1,"y":10},{"name":"Knight","x":2,"y":10},{"name":"Bishop","x":3,"y":10},{"name":"Guard","x":4,"y":10},
+    {"name":"King","x":5,"y":10},{"name":"Guard","x":6,"y":10},{"name":"Bishop","x":7,"y":10},{"name":"Knight","x":8,"y":10},{"name":"Rook","x":9,"y":10},
+    {"name":"Gun","x":2,"y":8},{"name":"Gun","x":8,"y":8},
+    {"name":"Pawn","x":1,"y":7},{"name":"Pawn","x":3,"y":7},{"name":"Pawn","x":5,"y":7},{"name":"Pawn","x":7,"y":7},{"name":"Pawn","x":9,"y":7}
 ]

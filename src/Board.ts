@@ -4,35 +4,35 @@ class Board extends egret.DisplayObjectContainer {
     public constructor() {
         super();
     }
-    private startX:number;
-    private startY:number;
-    private gridX:number;
-    private gridY:number;
+    public static startX:number = 25;
+    public static startY:number = 222;
+    public static gridX:number = 75;
+    public static gridY:number = 78;
     private cage:egret.Shape = new egret.Shape(); //选中的方框
     private con:egret.DisplayObjectContainer = new egret.DisplayObjectContainer(); //选中框的容器
     private chooseFlag:boolean = false;
     private eat:boolean = false;
-    private choose:egret.Bitmap;
+    private choose:Piece;
+    public pieceMap:{[key:string]:Piece} = {};
     public init(color:number,x:number,y:number,gridX:number,gridY:number)
     {
         console.log(x,y,gridX,gridY);
         this.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,this.judge,this,true,1);
         this.addChild(this.con);
         // this.startX = x;this.startY=y;this.gridX = gridX;this.gridY = gridY;
-        this.startX = 25;this.startY=222;this.gridX = 75;this.gridY = 78;
         let len:number = RES.getRes("piece_json").length;
         let piece = RES.getRes("piece_json");
         let board = RES.getRes("board_json");
         for(let i:number = 0; i<len; i++)
         {
             let b:egret.Bitmap = new egret.Bitmap();
-            b.texture = RES.getRes(piece[i].name+"_png");
+            b.texture = RES.getRes(piece[i].name+(Color.Red+Math.floor(i/16))+"_png");
             this.addChild(b);
-            let p:Piece;
-            p = this.transformToPosition(piece[i].x,piece[i].y);
+            let p:Piece = new Piece();
+            p.transformToPosition(piece[i].x,piece[i].y,piece[i].name,Color.Red+Math.floor(i/16));
+            p.bitMap = b;
+            this.pieceMap[i] = p;
             b.name = piece[i].name;
-            // b.x = board[piece[i].x][piece[i].y].x;
-            // b.y = board[piece[i].x][piece[i].y].y;
             b.x = p.x;
             b.y = p.y;
             b.width = 60;
@@ -40,7 +40,8 @@ class Board extends egret.DisplayObjectContainer {
             b.anchorOffsetX = 30;
             b.anchorOffsetY = 30;
             b.touchEnabled = true;
-            b.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click,this,true,0);
+            console.log(p.x,p.y,p.pointX,p.pointY);
+            // b.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click,this,true,0);
         }
     }
     private click(evt:egret.TouchEvent)
@@ -69,34 +70,40 @@ class Board extends egret.DisplayObjectContainer {
         if(this.chooseFlag) {
             console.log(evt,"judge");
             if(true) { //能够移动
-                let p:Piece;
-                p = this.transformToPoint(evt.stageX,evt.stageY);
-                p = this.transformToPosition(p.pointX,p.pointY);
+                let p:Piece = this.findPiece(evt.stageX,evt.$stageY);
                 this.choose.x = p.x;
                 this.choose.y = p.y;
                 this.chooseFlag = false;
                 this.choose = null;
                 this.con.removeChildren();
             }
+        }else {
+            let p:Piece = this.findPiece(evt.stageX,evt.$stageY);
+            console.log(p,"judge");
+            if(p) {
+                this.cage.graphics.lineStyle(2, 0x00CD00, 1, true)
+                this.cage.graphics.drawRect(0,0,75,78);
+                this.cage.graphics.endFill();
+                this.con.addChild(this.cage);
+                this.con.x = p.x-37.5;
+                this.con.y = p.y-39;
+                this.chooseFlag = true;
+                this.choose = p;
+            }
         }
     }
     
-    private transformToPoint(x:number,y:number):Piece
-    {
-        let p = new Piece();
-        p.x = x;
-        p.y = y;
-        p.pointY = Math.round((x - this.startX)/this.gridX)+1;
-        p.pointX = Math.round((y - this.startY)/this.gridY)+1;
-        return p;
+    private findPiece(x,y):Piece {
+        let pointX = 9 - Math.round((x - Board.startX)/Board.gridX)+1;
+        let pointY = 10 - Math.round((y - Board.startY)/Board.gridY)+1;
+        console.log(this.pieceMap,pointX,pointY);
+        for(let v in this.pieceMap){
+            console.log(this.pieceMap[v]);
+            if(this.pieceMap[v].pointX === pointX && this.pieceMap[v].pointY === pointY) {
+                return this.pieceMap[v];
+            }
+        }
+        return null;
     }
-    private transformToPosition(x:number,y:number):Piece
-    {
-        let p = new Piece();
-        p.pointX = x;
-        p.pointY = y;
-        p.x = this.startX + (y-1)*this.gridX ;
-        p.y = this.startY + (x-1)*this.gridY ;
-        return p;
-    }
+    
 }
