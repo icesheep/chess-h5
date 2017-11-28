@@ -12,7 +12,7 @@
 		"bin-debug/Color.js",
 		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js",
-		"bin-debug/Piece.1.js",
-		"bin-debug/Piece.js"
+		"bin-debug/Piece.js",
+		"bin-debug/Rule.js"
 	]
 }
