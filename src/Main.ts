@@ -121,7 +121,8 @@ class Main extends egret.DisplayObjectContainer {
         }
     }
 
-    private b:Board = new Board();
+    private b:Board;
+    private gameoverPanel:GameOverPanel;
     private gridX:number;
     private gridY:number;
     /**
@@ -129,23 +130,17 @@ class Main extends egret.DisplayObjectContainer {
      * Create a game scene
      */
     private createGameScene() {
+        this.b = new Board();
+        this.gameoverPanel = new GameOverPanel();
         let sky = this.createBitmapByName("bg_jpg");
         sky.anchorOffsetY = -(this.stage.stageHeight - sky.height) /2;
         this.addChild(sky);
         this.gridY = sky.height/10;
         this.gridX = sky.width/9;
         this.addChild( this.b );
+        this.b.addEventListener(GameEvent.GAME_OVER, this.gameover, this);
+        this.gameoverPanel.addEventListener(GameEvent.GAME_START, this.startgame, this);
         this.b.init(Color.Black,sky.x,sky.y+(this.stage.stageHeight - sky.height) /2,this.gridX,this.gridY);
-        // let imgLoader:egret.ImageLoader = new egret.ImageLoader;
-        // imgLoader.once( egret.Event.COMPLETE, this.imgLoadHandler, this );
-        // imgLoader.load( "resource/assets/black-car.png" );
-        // let imgLoader2:egret.ImageLoader = new egret.ImageLoader;
-        // imgLoader2.once( egret.Event.COMPLETE, this.imgLoadHandler, this );
-        // imgLoader2.load( "resource/assets/black-chief.png" );
-
-        //根据name关键字，异步获取一个json配置文件，name属性请参考resources/resource.json配置文件的内容。
-        // Get asynchronously a json configuration file according to name keyword. As for the property of name please refer to the configuration file of resources/resource.json.
-        // RES.getResAsync("description_json", this.startAnimation, this)
     }
 
     /**
@@ -159,40 +154,33 @@ class Main extends egret.DisplayObjectContainer {
         return result;
     }
 
-    
-    private imgLoadHandler( evt:egret.Event ):void{
-        
-        var bmd:egret.BitmapData = evt.currentTarget.data;
-        /*** 本示例关键代码段开始 ***/
-        /// 将已加载完成的图像显示出来
-        var bird:egret.Bitmap = new egret.Bitmap( bmd );
-        bird.x = 80;
-        bird.y = 80;
-        this.addChild( bird );
-        /*** 本示例关键代码段结束 ***/
-            
-        /// 为定位设置基准点(即锚点)
-        bird.anchorOffsetX = bmd.width / 2;
-        bird.anchorOffsetY = bmd.height / 2;
-        bird.x = this.stage.stageWidth * Math.random();
-        bird.y = this.stage.stageHeight * Math.random();
+    private init():void
+    {
+        this.gv = new GameView();
+        this.addChild(this.gv);
+        this.gv.addEventListener(GameEvent.GAME_OVER, this.gameover,this);
+        this.timer = new egret.Timer(20,0);
+        this.timer.addEventListener(egret.TimerEvent.TIMER, this.timers, this);
 
-        // this._bgInfo = new egret.Shape;
-        // this.addChildAt( this._bgInfo, this.numChildren - 1 );
+        this.gameoverPanel = new GameOverPanel();
+        this.gameoverPanel.addEventListener(GameEvent.GAME_START,this.startgame,this);
 
-        // this._bgInfo.x = this._txInfo.x;
-        // this._bgInfo.y = this._txInfo.y;
-        // this._bgInfo.graphics.clear();
-        // this._bgInfo.graphics.beginFill( 0xffffff, .5 );
-        // this._bgInfo.graphics.drawRect( 0, 0, this._txInfo.width, this._txInfo.height );
-        // this._bgInfo.graphics.endFill();
-        
-        this.stage.addEventListener( egret.TouchEvent.TOUCH_BEGIN, ( evt:egret.TouchEvent )=>{
-            bird.x = evt.localX ;
-            bird.y = evt.localY ;
-            console.log(bird.x,bird.y);
-        }, this );
-        
+        this.startgamePanel = new StartGamePanel();
+        this.startgamePanel.addEventListener(GameEvent.GAME_START, this.startgame, this);
+        this.addChild(this.startgamePanel);
+    }
+
+    private gameover(evt:GameEvent):void
+    {
+        this.addChild(this.gameoverPanel);
+    }
+
+    private startgame(evt:GameEvent):void
+    {
+        if(this.gameoverPanel.parent)
+        {
+            this.removeChild(this.gameoverPanel);
+        }
     }
 }
 
