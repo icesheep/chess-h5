@@ -3,7 +3,7 @@ class Rule {
 
     public ifLegal(piece:string,startX:number,startY:number,endX:number,endY:number):boolean {
         let a:{x:number,y:number,z:number,dx:number,dy:number,dz:number} = this.pieceCount(startX,startY,endX,endY);
-        console.log(a,piece);
+        // console.log(a,piece);
         switch(piece) {
             case "Rook" : {
                 if(startX===endX && a.y === 0) {
@@ -24,7 +24,7 @@ class Rule {
                 }
             }
             case "Bishop" : {
-                if(Board.playerColor === Color.Red) {
+                if(Board.playerColor === Color.RED) {
                     if(endY > 5) {
                         return false;
                     }
@@ -40,7 +40,7 @@ class Rule {
                 }
             }
             case "Guard" : {
-                if(Board.playerColor === Color.Red) {
+                if(Board.playerColor === Color.RED) {
                     if(endY > 3) {
                         return false;
                     }
@@ -56,7 +56,7 @@ class Rule {
                 }
             }
             case "King" : {
-                if(Board.playerColor === Color.Red) {
+                if(Board.playerColor === Color.RED) {
                     if(endY > 3) {
                         return false;
                     }
@@ -99,7 +99,7 @@ class Rule {
                 }
             }
             case "Pawn" : {
-                if(Board.playerColor === Color.Red) {
+                if(Board.playerColor === Color.RED) {
                     if(endY < startY) {
                         return false;
                     }
@@ -109,7 +109,7 @@ class Rule {
                     }
                 }
                 if(a.dx===1 && a.dy===0) {
-                    if(Board.playerColor === Color.Red) {
+                    if(Board.playerColor === Color.RED) {
                         if(endY <= 5) {
                             return false;
                         }

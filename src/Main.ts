@@ -125,6 +125,13 @@ class Main extends egret.DisplayObjectContainer {
     private gameoverPanel:GameOverPanel;
     private gridX:number;
     private gridY:number;
+    private sky:any;
+    // public static pieceBoardX:number;
+    // public static pieceBoardY:number;
+    // public static pieceHeight:number;
+    // public static pieceWidth:number;
+    public static gridX:number;
+    public static gridY:number;
     /**
      * 创建游戏场景
      * Create a game scene
@@ -132,15 +139,15 @@ class Main extends egret.DisplayObjectContainer {
     private createGameScene() {
         this.b = new Board();
         this.gameoverPanel = new GameOverPanel();
-        let sky = this.createBitmapByName("bg_jpg");
-        sky.anchorOffsetY = -(this.stage.stageHeight - sky.height) /2;
-        this.addChild(sky);
-        this.gridY = sky.height/10;
-        this.gridX = sky.width/9;
+        this.sky = this.createBitmapByName("bg_jpg");
+        this.sky.anchorOffsetY = -(this.stage.stageHeight - this.sky.height) /2;
+        this.addChild(this.sky);
+        Main.gridX = this.sky.height/10;
+        Main.gridY = this.sky.width/9;
         this.addChild( this.b );
         this.b.addEventListener(GameEvent.GAME_OVER, this.gameover, this);
         this.gameoverPanel.addEventListener(GameEvent.GAME_START, this.startgame, this);
-        this.b.init(Color.Black,sky.x,sky.y+(this.stage.stageHeight - sky.height) /2,this.gridX,this.gridY);
+        this.b.init();
     }
 
     /**
@@ -154,22 +161,6 @@ class Main extends egret.DisplayObjectContainer {
         return result;
     }
 
-    private init():void
-    {
-        this.gv = new GameView();
-        this.addChild(this.gv);
-        this.gv.addEventListener(GameEvent.GAME_OVER, this.gameover,this);
-        this.timer = new egret.Timer(20,0);
-        this.timer.addEventListener(egret.TimerEvent.TIMER, this.timers, this);
-
-        this.gameoverPanel = new GameOverPanel();
-        this.gameoverPanel.addEventListener(GameEvent.GAME_START,this.startgame,this);
-
-        this.startgamePanel = new StartGamePanel();
-        this.startgamePanel.addEventListener(GameEvent.GAME_START, this.startgame, this);
-        this.addChild(this.startgamePanel);
-    }
-
     private gameover(evt:GameEvent):void
     {
         this.addChild(this.gameoverPanel);
@@ -181,6 +172,7 @@ class Main extends egret.DisplayObjectContainer {
         {
             this.removeChild(this.gameoverPanel);
         }
+        this.b.init();
     }
 }
 

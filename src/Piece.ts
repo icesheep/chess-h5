@@ -24,7 +24,7 @@ class Piece
         this.pointY = pointY;
         this.name = name;
         this.color = color;
-        if(Board.playerColor === Color.Red) {
+        if(Board.playerColor === Color.RED) {
             this.x = Board.startX + (9-pointX)*Board.gridX ;
             this.y = Board.startY + (10-pointY)*Board.gridY ;
         } else {
