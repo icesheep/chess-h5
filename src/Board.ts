@@ -39,6 +39,7 @@ class Board extends egret.DisplayObjectContainer {
                 }
                 that.start();
             }else if(that.response.type === 'ORDER' && that.response.orderType === 'END_GAME') {
+                that.go = false;
                 let event:GameEvent = new GameEvent(GameEvent.GAME_OVER);
                 that.dispatchEvent(event);
             } else {
