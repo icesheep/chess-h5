@@ -4,10 +4,10 @@ class Board extends egret.DisplayObjectContainer {
     public constructor() {
         super();
     }
-    public static startX:number = 25;
-    public static startY:number = 222;
-    public static gridX:number = 75;
-    public static gridY:number = 78;
+    public static startX:number = 113;
+    public static startY:number = 113;
+    public static gridX:number = 140;
+    public static gridY:number = 140;
     private cage:egret.Shape = new egret.Shape(); //选中的方框
     private con:egret.DisplayObjectContainer = new egret.DisplayObjectContainer(); //选中框的容器
     private chooseFlag:boolean = false;
@@ -22,6 +22,47 @@ class Board extends egret.DisplayObjectContainer {
     private go:boolean;
     public init()
     {
+        this.initSocket();
+    }
+    //初始化棋子
+    public start()
+    {
+        this.removeChildren();
+        console.log(Board.startX,Board.startY,Board.gridX,Board.gridY);
+        Board.playerColor = this.response.color;
+        this.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,this.judge,this,true,1);
+        this.addChild(this.con);
+        // this.startX = x;this.startY=y;this.gridX = gridX;this.gridY = gridY;
+        let len:number = RES.getRes("piece_json").length;
+        let piece = RES.getRes("piece_json");
+        let board = RES.getRes("board_json");
+        for(let i:number = 0; i<len; i++)
+        {
+            let b:egret.Bitmap = new egret.Bitmap();
+            b.texture = RES.getRes(piece[i].name + (Color.RED + Math.floor(i/16)) +"_png");
+            this.addChild(b);
+            let p:Piece = new Piece();
+            p.transformToPosition(piece[i].x,piece[i].y,piece[i].name,Color.RED + Math.floor(i/16));
+            p.bitMap = b;
+            p.key = i;
+            Board.pieceMap[i] = p;
+            b.name = piece[i].name;
+            b.x = p.x;
+            b.y = p.y;
+            b.width = 50;
+            b.height = 50;
+            b.anchorOffsetX = 25;
+            b.anchorOffsetY = 25;
+            b.touchEnabled = true;
+            // console.log(p.x,p.y,p.pointX,p.pointY);
+            // b.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click,this,true,0);
+        }
+        let sound:egret.Sound = RES.getRes( "1_mp3" ); 
+        let channel:egret.SoundChannel = sound.play(0,-1);
+    }
+
+    //连接websocket
+    initSocket() {
         this.socket = new WebSocket("ws://game.zhuran.tw:10222/ws");
         let that = this;
         this.socket.onmessage = function(event) {
@@ -47,8 +88,9 @@ class Board extends egret.DisplayObjectContainer {
                 let startP:Piece = that.findPiece(that.response.from.x,that.response.from.y);
                 let endP:Piece = that.findPiece(that.response.to.x,that.response.to.y);
                 if(endP) {
-                    startP.bitMap.x = endP.x;
-                    startP.bitMap.y = endP.y;
+                    // startP.bitMap.x = endP.x;
+                    // startP.bitMap.y = endP.y;
+                    egret.Tween.get(startP.bitMap).to( {x:endP.x,y:endP.y}, 300, egret.Ease.sineIn );
                     startP.x = endP.x;
                     startP.y = endP.y;
                     startP.pointX = endP.pointX;
@@ -57,50 +99,18 @@ class Board extends egret.DisplayObjectContainer {
                     that.removeChild(endP.bitMap);
                 }else {
                     let temp = that.findPosition(that.response.to.x,that.response.to.y);
-                    startP.bitMap.x = temp.x;
-                    startP.bitMap.y = temp.y;
+                    // startP.bitMap.x = temp.x;
+                    // startP.bitMap.y = temp.y;
+                    egret.Tween.get(startP.bitMap).to( {x:temp.x,y:temp.y}, 300, egret.Ease.sineIn );
                     startP.x = temp.x;
                     startP.y = temp.y;
                     startP.pointX = that.response.to.x;
                     startP.pointY = that.response.to.y;
                 }
                 that.go = true;
-                
             }
         };
     }
-    public start()
-    {
-        Board.playerColor = this.response.color;
-        this.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,this.judge,this,true,1);
-        this.addChild(this.con);
-        // this.startX = x;this.startY=y;this.gridX = gridX;this.gridY = gridY;
-        let len:number = RES.getRes("piece_json").length;
-        let piece = RES.getRes("piece_json");
-        let board = RES.getRes("board_json");
-        for(let i:number = 0; i<len; i++)
-        {
-            let b:egret.Bitmap = new egret.Bitmap();
-            b.texture = RES.getRes(piece[i].name + (Color.RED + Math.floor(i/16)) +"_png");
-            this.addChild(b);
-            let p:Piece = new Piece();
-            p.transformToPosition(piece[i].x,piece[i].y,piece[i].name,Color.RED + Math.floor(i/16));
-            p.bitMap = b;
-            p.key = i;
-            Board.pieceMap[i] = p;
-            b.name = piece[i].name;
-            b.x = p.x;
-            b.y = p.y;
-            b.width = 60;
-            b.height = 60;
-            b.anchorOffsetX = 30;
-            b.anchorOffsetY = 30;
-            b.touchEnabled = true;
-            // console.log(p.x,p.y,p.pointX,p.pointY);
-            // b.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click,this,true,0);
-        }
-    }
-
     //棋盘点击事件
     private judge(evt:egret.TouchEvent)
     {
@@ -134,9 +144,9 @@ class Board extends egret.DisplayObjectContainer {
                         this.choose.y = p.y;
                         this.choose.pointX = p.pointX;
                         this.choose.pointY = p.pointY;
-                        this.choose.bitMap.x = p.x;
-                        this.choose.bitMap.y = p.y;
-                        // egret.Tween.get(this.choose.bitMap).to( {x:p.x,y:p.y}, 2000, egret.Ease.sineIn );
+                        // this.choose.bitMap.x = p.x;
+                        // this.choose.bitMap.y = p.y;
+                        egret.Tween.get(this.choose.bitMap).to( {x:p.x,y:p.y}, 300, egret.Ease.sineIn );
                         // if(p.name === 'King') {
                         //     var event:GameEvent = new GameEvent(GameEvent.GAME_OVER);
                         //     this.dispatchEvent(event);
@@ -173,9 +183,9 @@ class Board extends egret.DisplayObjectContainer {
                     this.choose.y = tempy;
                     this.choose.pointX = temp.pointX;
                     this.choose.pointY = temp.pointY;
-                    this.choose.bitMap.x = tempx;
-                    this.choose.bitMap.y = tempy;
-                    egret.Tween.get(this.choose.bitMap).to( {x:tempx,y:tempy}, 1000, egret.Ease.sineIn );
+                    // this.choose.bitMap.x = tempx;
+                    // this.choose.bitMap.y = tempy;
+                    egret.Tween.get(this.choose.bitMap).to( {x:tempx,y:tempy}, 300, egret.Ease.sineIn );
                     this.chooseFlag = false;
                     // this.choose = null;
                     sendData.to = {
@@ -240,11 +250,11 @@ class Board extends egret.DisplayObjectContainer {
     //画选择框
     private drawRect(p:Piece):void {
         this.cage.graphics.lineStyle(2, 0x00CD00, 1, true)
-        this.cage.graphics.drawRect(0,0,75,78);
+        this.cage.graphics.drawRect(0,0,64,64);
         this.cage.graphics.endFill();
         this.con.addChild(this.cage);
-        this.con.x = p.x-37.5;
-        this.con.y = p.y-39;
+        this.con.x = p.x-Board.gridX/2;
+        this.con.y = p.y-Board.gridY/2;
         this.chooseFlag = true;
         this.choose = p;
     }

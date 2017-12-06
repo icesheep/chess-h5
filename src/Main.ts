@@ -131,7 +131,8 @@ class Main extends egret.DisplayObjectContainer {
     // public static pieceHeight:number;
     // public static pieceWidth:number;
     public static gridX:number;
-    public static gridY:number;
+    public static offsetY:number;
+    public static ratio:number;
     /**
      * 创建游戏场景
      * Create a game scene
@@ -139,11 +140,17 @@ class Main extends egret.DisplayObjectContainer {
     private createGameScene() {
         this.b = new Board();
         this.gameoverPanel = new GameOverPanel();
-        this.sky = this.createBitmapByName("bg_jpg");
+        this.sky = this.createBitmapByName("board_jpg");
+        Main.ratio = this.stage.$stageWidth/this.sky.width;
+        this.sky.width = this.sky.width * Main.ratio;
+        this.sky.height = this.sky.height * Main.ratio;
         this.sky.anchorOffsetY = -(this.stage.stageHeight - this.sky.height) /2;
+        Main.offsetY = (this.stage.stageHeight - this.sky.height) /2 ;
+        Board.startY = Board.startY*Main.ratio + Main.offsetY;
+        Board.startX = Board.startX*Main.ratio;
+        Board.gridX = Board.gridX*Main.ratio;
+        Board.gridY = Board.gridY*Main.ratio;
         this.addChild(this.sky);
-        Main.gridX = this.sky.height/10;
-        Main.gridY = this.sky.width/9;
         this.addChild( this.b );
         this.b.addEventListener(GameEvent.GAME_OVER, this.gameover, this);
         this.gameoverPanel.addEventListener(GameEvent.GAME_START, this.startgame, this);
@@ -163,7 +170,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private gameover(evt:GameEvent):void
     {
-        this.addChild(this.gameoverPanel);
+        // this.addChild(this.gameoverPanel);
     }
 
     private startgame(evt:GameEvent):void

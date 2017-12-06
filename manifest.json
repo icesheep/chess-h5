@@ -8,16 +8,16 @@
 		"promise/bin/promise.js"
 	],
 	"game": [
-		"bin-debug/Board.js",
-		"bin-debug/Color.js",
+		"bin-debug/WSData.js",
+		"bin-debug/Main.js",
 		"bin-debug/GameData.js",
 		"bin-debug/GameEvent.js",
 		"bin-debug/GameOverPanel.js",
-		"bin-debug/LoadingUI.js",
-		"bin-debug/Main.js",
+		"bin-debug/Color.js",
+		"bin-debug/Board.js",
 		"bin-debug/Piece.js",
 		"bin-debug/Rule.js",
 		"bin-debug/StartGamePanel.js",
-		"bin-debug/WSData.js"
+		"bin-debug/LoadingUI.js"
 	]
 }
