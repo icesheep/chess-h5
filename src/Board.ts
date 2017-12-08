@@ -9,7 +9,13 @@ class Board extends egret.DisplayObjectContainer {
     public static gridX:number = 140;
     public static gridY:number = 140;
     private cage:egret.Shape = new egret.Shape(); //选中的方框
+    private endCage:egret.Shape = new egret.Shape(); //选中的方框
     private con:egret.DisplayObjectContainer = new egret.DisplayObjectContainer(); //选中框的容器
+    private endCon:egret.DisplayObjectContainer = new egret.DisplayObjectContainer(); //选中框的容器
+    private cage2:egret.Shape = new egret.Shape(); //对方选中的方框
+    private endCage2:egret.Shape = new egret.Shape(); //对方选中的方框
+    private con2:egret.DisplayObjectContainer = new egret.DisplayObjectContainer(); //对方选中框的容器
+    private endCon2:egret.DisplayObjectContainer = new egret.DisplayObjectContainer(); //对方选中框的容器
     private chooseFlag:boolean = false;
     private eat:boolean = false;
     private choose:Piece;
@@ -32,14 +38,26 @@ class Board extends egret.DisplayObjectContainer {
         Board.playerColor = this.response.color;
         this.stage.addEventListener(egret.TouchEvent.TOUCH_TAP,this.judge,this,true,1);
         this.addChild(this.con);
+        this.addChild(this.con2);
+        this.addChild(this.endCon);
+        this.addChild(this.endCon2);
         // this.startX = x;this.startY=y;this.gridX = gridX;this.gridY = gridY;
         let len:number = RES.getRes("piece_json").length;
         let piece = RES.getRes("piece_json");
         let board = RES.getRes("board_json");
         for(let i:number = 0; i<len; i++)
         {
+            let color:string;
+            if(i<16) {
+                color = 'RED';
+            }else {
+                color = 'BLACK';
+            }
             let b:egret.Bitmap = new egret.Bitmap();
-            b.texture = RES.getRes(piece[i].name + (Color.RED + Math.floor(i/16)) +"_png");
+            // b.texture = RES.getRes(piece[i].name + (Color.RED + Math.floor(i/16)) +"_png");
+            b.texture = RES.getRes("pieces."+color+piece[i].name.toUpperCase());
+            // console.log(RES.getRes("pieces."+color+piece[i].name.toUpperCase()));
+            // b.texture = RES.getRes("pieces.REDKING");
             this.addChild(b);
             let p:Piece = new Piece();
             p.transformToPosition(piece[i].x,piece[i].y,piece[i].name,Color.RED + Math.floor(i/16));
@@ -49,11 +67,12 @@ class Board extends egret.DisplayObjectContainer {
             b.name = piece[i].name;
             b.x = p.x;
             b.y = p.y;
-            b.width = 50;
-            b.height = 50;
-            b.anchorOffsetX = 25;
-            b.anchorOffsetY = 25;
-            b.touchEnabled = true;
+            // b.width = Board.gridX;
+            // b.height = Board.gridX;
+            b.anchorOffsetX = b.width/2;
+            b.anchorOffsetY = b.height/2;
+            b.scaleX = 0.2;
+            b.scaleY = 0.2;
             // console.log(p.x,p.y,p.pointX,p.pointY);
             // b.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click,this,true,0);
         }
@@ -87,6 +106,7 @@ class Board extends egret.DisplayObjectContainer {
                 // console.log(that.response);
                 let startP:Piece = that.findPiece(that.response.from.x,that.response.from.y);
                 let endP:Piece = that.findPiece(that.response.to.x,that.response.to.y);
+                that.drawRect(startP.x,startP.y,'start1');
                 if(endP) {
                     // startP.bitMap.x = endP.x;
                     // startP.bitMap.y = endP.y;
@@ -96,7 +116,8 @@ class Board extends egret.DisplayObjectContainer {
                     startP.pointX = endP.pointX;
                     startP.pointY = endP.pointY;
                     delete Board.pieceMap[endP.key];
-                    that.removeChild(endP.bitMap);
+                    that.removeChild(endP.bitMap);            
+                    that.drawRect(endP.x,endP.y,'end1');
                 }else {
                     let temp = that.findPosition(that.response.to.x,that.response.to.y);
                     // startP.bitMap.x = temp.x;
@@ -106,6 +127,7 @@ class Board extends egret.DisplayObjectContainer {
                     startP.y = temp.y;
                     startP.pointX = that.response.to.x;
                     startP.pointY = that.response.to.y;
+                    that.drawRect(temp.x,temp.y,'end1');
                 }
                 that.go = true;
             }
@@ -138,8 +160,9 @@ class Board extends egret.DisplayObjectContainer {
             if(p) { //第二次选中的棋子
                 if(p.color !== Board.playerColor) { //第二次选择的对面的棋子
                     if(this.rule.ifLegal(this.choose.name,this.choose.pointX,this.choose.pointY,p.pointX,p.pointY)) { //能够移动
-                        this.con.removeChildren(); //去掉选择框
-                         //吃子
+                        // this.con.removeChildren(); //去掉选择框
+                        //吃子
+                        this.drawRect(p.x,p.y,'end');
                         this.choose.x = p.x;
                         this.choose.y = p.y;
                         this.choose.pointX = p.pointX;
@@ -163,9 +186,12 @@ class Board extends egret.DisplayObjectContainer {
                         console.log(sendData);
                         this.socket.send(JSON.stringify(sendData));
                         this.go = false;
+                        this.drawRect(p.x,p.y,'end');
                     }
                 } else { //第二次选择的自己的棋子，重新画框
-                    this.drawRect(p);
+                    this.drawRect(p.x,p.y,'start');
+                    this.chooseFlag = true;
+                    this.choose = p;
                 }
             }else {  //第二次选择的空白区域
                 let tempx:number;
@@ -178,7 +204,7 @@ class Board extends egret.DisplayObjectContainer {
                     tempy = Board.startY + (temp.pointY-1)*Board.gridY ;
                 }
                 if(this.rule.ifLegal(this.choose.name,this.choose.pointX,this.choose.pointY,temp.pointX,temp.pointY)){  //可以移动
-                    this.con.removeChildren(); //去掉选择框               
+                    // this.con.removeChildren(); //去掉选择框               
                     this.choose.x = tempx;
                     this.choose.y = tempy;
                     this.choose.pointX = temp.pointX;
@@ -195,12 +221,15 @@ class Board extends egret.DisplayObjectContainer {
                     console.log(sendData);
                     this.socket.send(JSON.stringify(sendData));
                     this.go = false;
+                    this.drawRect(tempx,tempy,'end');
                 }
             }
         }else { //未选择棋子，进行第一次选择
             // console.log(p,"judge");
             if(p && p.color === Board.playerColor) {
-                this.drawRect(p);
+                this.drawRect(p.x,p.y,'start');
+                this.chooseFlag = true;
+                this.choose = p;
             }
         }
     }
@@ -248,15 +277,36 @@ class Board extends egret.DisplayObjectContainer {
     }
 
     //画选择框
-    private drawRect(p:Piece):void {
-        this.cage.graphics.lineStyle(2, 0x00CD00, 1, true)
-        this.cage.graphics.drawRect(0,0,64,64);
-        this.cage.graphics.endFill();
-        this.con.addChild(this.cage);
-        this.con.x = p.x-Board.gridX/2;
-        this.con.y = p.y-Board.gridY/2;
-        this.chooseFlag = true;
-        this.choose = p;
+    private drawRect(x:number,y:number,type:string):void {
+        if(type === 'start') {   
+            this.cage.graphics.lineStyle(2, 0x00CD00, 1, true)
+            this.cage.graphics.drawRect(0,0,64,64);
+            this.cage.graphics.endFill();
+            this.con.addChild(this.cage);
+            this.con.x = x-Board.gridX/2;
+            this.con.y = y-Board.gridY/2;
+        }else if(type === 'end') {
+            this.endCage.graphics.lineStyle(2, 0x00CD00, 1, true)
+            this.endCage.graphics.drawRect(0,0,64,64);
+            this.endCage.graphics.endFill();           
+            this.endCon.addChild(this.endCage);
+            this.endCon.x = x-Board.gridX/2;
+            this.endCon.y = y-Board.gridY/2;
+        }else if(type === 'start1') {  
+            this.cage2.graphics.lineStyle(2, 0xFF4500, 1, true)
+            this.cage2.graphics.drawRect(0,0,64,64);
+            this.cage2.graphics.endFill();      
+            this.con2.addChild(this.cage2);
+            this.con2.x = x-Board.gridX/2;
+            this.con2.y = y-Board.gridY/2;
+        }else if(type === 'end1') { 
+            this.endCage2.graphics.lineStyle(2, 0xFF4500, 1, true)
+            this.endCage2.graphics.drawRect(0,0,64,64);
+            this.endCage2.graphics.endFill();          
+            this.endCon2.addChild(this.endCage2);
+            this.endCon2.x = x-Board.gridX/2;
+            this.endCon2.y = y-Board.gridY/2;
+        }
     }
     
 

@@ -1,0 +1,136 @@
+{
+    "file": "pieces.png",
+    "frames": {
+        "REDKING": {
+            "x": 0,
+            "y": 0,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },
+        "REDROOK": {
+            "x": 300,
+            "y": 0,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },
+        "REDKNIGHT": {
+            "x": 600,
+            "y": 0,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },"REDGUN": {
+            "x": 900,
+            "y": 0,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },"REDBISHOP": {
+            "x": 1200,
+            "y": 0,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },"REDGUARD": {
+            "x": 1500,
+            "y": 0,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },"REDPAWN": {
+            "x": 1800,
+            "y": 0,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },"BLACKKING": {
+            "x": 0,
+            "y": 300,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },
+        "BLACKROOK": {
+            "x": 300,
+            "y": 300,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },
+        "BLACKKNIGHT": {
+            "x": 600,
+            "y": 300,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },"BLACKGUN": {
+            "x": 900,
+            "y": 300,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },"BLACKBISHOP": {
+            "x": 1200,
+            "y": 300,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },"BLACKGUARD": {
+            "x": 1500,
+            "y": 300,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        },"BLACKPAWN": {
+            "x": 1800,
+            "y": 300,
+            "w": 300,
+            "h": 300,
+            "offX":0,
+            "offY":0,
+            "sourceW":300,
+            "sourceH":300
+        }
+    }
+}

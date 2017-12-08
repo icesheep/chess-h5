@@ -123,6 +123,7 @@ class Main extends egret.DisplayObjectContainer {
 
     private b:Board;
     private gameoverPanel:GameOverPanel;
+    private startGamePanel:StartGamePanel;
     private gridX:number;
     private gridY:number;
     private sky:any;
@@ -140,6 +141,7 @@ class Main extends egret.DisplayObjectContainer {
     private createGameScene() {
         this.b = new Board();
         this.gameoverPanel = new GameOverPanel();
+        this.startGamePanel = new StartGamePanel();
         this.sky = this.createBitmapByName("board_jpg");
         Main.ratio = this.stage.$stageWidth/this.sky.width;
         this.sky.width = this.sky.width * Main.ratio;
@@ -150,11 +152,12 @@ class Main extends egret.DisplayObjectContainer {
         Board.startX = Board.startX*Main.ratio;
         Board.gridX = Board.gridX*Main.ratio;
         Board.gridY = Board.gridY*Main.ratio;
-        this.addChild(this.sky);
-        this.addChild( this.b );
+        
+        this.addChild( this.startGamePanel );
+        this.startGamePanel.addEventListener(GameEvent.GAME_START,this.startgame,this);
         this.b.addEventListener(GameEvent.GAME_OVER, this.gameover, this);
         this.gameoverPanel.addEventListener(GameEvent.GAME_START, this.startgame, this);
-        this.b.init();
+        // this.b.init();
     }
 
     /**
@@ -179,6 +182,12 @@ class Main extends egret.DisplayObjectContainer {
         {
             this.removeChild(this.gameoverPanel);
         }
+        if(this.startGamePanel.parent)
+        {
+            this.removeChild(this.startGamePanel);
+        }
+        this.addChild(this.sky);
+        this.addChild( this.b );
         this.b.init();
     }
 }
